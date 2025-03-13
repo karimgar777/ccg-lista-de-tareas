@@ -3,13 +3,14 @@ const MiniCssExtract = require('mini-css-extract-plugin');
 const CopyPlugin = require("copy-webpack-plugin");
 const CssMinimizer = require("css-minimizer-webpack-plugin");
 const Terser = require("terser-webpack-plugin");
+const path = require('path'); // Agrega esta línea
 
 module.exports = {
-    
     mode: 'production',
-    output:{
-        clean:true,
-        filename: 'main.[contenthash].js'
+    output: {
+        clean: true,
+        filename: 'main.[contenthash].js',
+        path: path.resolve(__dirname, 'docs') // Agrega esta línea
     },
     module: {
         rules: [
@@ -32,16 +33,15 @@ module.exports = {
             {
                 test: /\.(png|jpe?g|gif)$/,
                 loader: 'file-loader',
-
             },
         ]
     },
-    optimization:{
+    optimization: {
         minimize: true,
-        minimizer:[
+        minimizer: [
             new CssMinimizer(),
             new Terser(),
-        ]  
+        ]
     },
     plugins: [
         new HtmlWebPackPlugin({
@@ -54,10 +54,9 @@ module.exports = {
             ignoreOrder: false,
         }),
         new CopyPlugin({
-            patterns:[
-                {from:'src/assets/', to:'assets/'}
+            patterns: [
+                { from: 'src/assets/', to: 'assets/' }
             ]
         })
     ]
-
-}
+};
